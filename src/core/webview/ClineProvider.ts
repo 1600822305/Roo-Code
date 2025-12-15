@@ -154,7 +154,6 @@ export class ClineProvider
 	private static readonly PENDING_OPERATION_TIMEOUT_MS = 30000 // 30 seconds
 
 	// Lock to prevent concurrent cancelTask/checkpointRestore operations
-	private taskOperationLock: Promise<void> = Promise.resolve()
 	private isTaskOperationInProgress = false
 
 	private cloudOrganizationsCache: CloudOrganizationMembership[] | null = null
@@ -1785,8 +1784,8 @@ export class ClineProvider
 				enableBridge: BridgeOrchestrator.isEnabled(cloudUserInfo, remoteControlEnabled),
 			})
 
-			// Set the imported clineMessages directly
-			task.clineMessages = result.clineMessages
+			// Set the imported clineMessages and persist them
+			await task.overwriteClineMessages(result.clineMessages)
 
 			await this.addClineToStack(task)
 
