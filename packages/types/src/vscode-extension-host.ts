@@ -382,6 +382,7 @@ export interface WebviewMessage {
 		| "didShowAnnouncement"
 		| "selectImages"
 		| "exportCurrentTask"
+		| "importTask"
 		| "shareCurrentTask"
 		| "showTaskWithId"
 		| "deleteTaskWithId"
