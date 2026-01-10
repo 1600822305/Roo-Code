@@ -1,0 +1,130 @@
+# Roo-Code 自定义分支更新指南
+
+## 项目背景
+
+这是一个基于官方 [RooCodeInc/Roo-Code](https://github.com/RooCodeInc/Roo-Code) 的自定义分支，包含以下自定义功能：
+
+1. **导入任务功能** - 从导出的 Markdown 文件导入任务
+2. **工具协议选择器** - 在高级设置中保留 XML/Native 工具协议选择（官方已移除）
+
+## Git 远程仓库配置
+
+```
+origin  https://github.com/RooCodeInc/Roo-Code.git  (官方仓库)
+fork    https://github.com/1600822305/Roo-Code.git  (个人 fork)
+```
+
+## 更新步骤
+
+### 1. 获取官方最新代码
+
+```bash
+git fetch origin
+```
+
+### 2. 查看官方更新内容
+
+```bash
+# 查看官方有多少新提交
+git rev-list --count HEAD..origin/main
+
+# 查看官方更新日志
+git log --oneline HEAD..origin/main
+
+# 查看你的自定义提交
+git log --oneline origin/main..HEAD
+```
+
+### 3. Rebase 到官方最新代码
+
+```bash
+# 如果有未提交的修改，先提交
+git add .
+git commit --no-verify -m "your commit message"
+
+# Rebase（将自定义提交移到官方最新代码之上）
+git rebase origin/main
+```
+
+### 4. 解决冲突（如果有）
+
+常见冲突文件：
+- `src/shared/WebviewMessage.ts` - 官方已将类型移到 `@roo-code/types`
+
+解决方法：
+```bash
+# 查看冲突文件
+git diff --name-only --diff-filter=U
+
+# 编辑冲突文件，解决冲突后
+git add <冲突文件>
+git rebase --continue
+```
+
+**关于 WebviewMessage.ts 冲突：**
+- 保留官方的导出方式：`export type { WebviewMessage } from "@roo-code/types"`
+- 如果需要添加新的消息类型（如 `importTask`），需要在 `packages/types/src/vscode-extension-host.ts` 的 `WebviewMessage` 接口中添加
+
+### 5. 恢复被官方删除的功能
+
+**恢复工具协议选择器（UI + 后端逻辑）：**
+
+```bash
+# 恢复 UI 组件
+git show d00d9edec --reverse -- webview-ui/src/components/settings/ApiOptions.tsx | git apply --reverse
+
+# 恢复后端协议解析逻辑（重要！否则选择 XML 无效）
+git show d00d9edec --reverse -- src/utils/resolveToolProtocol.ts | git apply --reverse
+
+# 提交
+git add webview-ui/src/components/settings/ApiOptions.tsx src/utils/resolveToolProtocol.ts
+git commit --no-verify -m "feat: restore tool protocol selector in advanced settings"
+```
+
+> 注：`d00d9edec` 是官方删除工具协议选择器的提交 hash，这个值是固定的
+> 
+> **必须同时恢复两个文件**：
+> - `ApiOptions.tsx` - UI 选择器
+> - `resolveToolProtocol.ts` - 后端协议解析逻辑（否则无论选什么都会强制用 native）
+
+### 6. 构建 VSIX
+
+```bash
+# 安装依赖
+pnpm install
+
+# 如果遇到 SSL 证书问题
+pnpm config set strict-ssl false
+pnpm install
+
+# 构建 VSIX
+pnpm vsix
+```
+
+构建产物位置：`bin/roo-cline-x.x.x.vsix`
+
+## 自定义功能文件清单
+
+### 导入任务功能
+- `src/integrations/misc/import-markdown.ts` - 导入逻辑
+- `src/core/webview/ClineProvider.ts` - 消息处理
+- `src/core/webview/webviewMessageHandler.ts` - 消息路由
+- `webview-ui/src/components/chat/TaskActions.tsx` - UI 按钮
+- `webview-ui/src/i18n/locales/*/chat.json` - 翻译
+
+### 工具协议选择器
+- `webview-ui/src/components/settings/ApiOptions.tsx` - UI 组件
+- `src/utils/resolveToolProtocol.ts` - 后端协议解析逻辑
+
+## 注意事项
+
+1. **提交到 main 分支**：项目有 pre-commit hook 阻止直接提交到 main，使用 `--no-verify` 跳过
+2. **类型定义位置**：官方已将 `WebviewMessage` 等类型移到 `packages/types/src/vscode-extension-host.ts`
+3. **Vim 编辑器**：Rebase 时可能进入 vim，按 `Esc` 然后输入 `:wq` 保存退出
+
+## 最近一次更新记录
+
+- **日期**：2026-01-14
+- **官方版本**：v3.39.3 → v3.40.0
+- **同步提交数**：16 个
+- **自定义提交数**：6 个
