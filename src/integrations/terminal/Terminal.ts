@@ -159,6 +159,20 @@ export class Terminal extends BaseTerminal {
 			VTE_VERSION: "0",
 		}
 
+		// Windows UTF-8 encoding support
+		if (process.platform === "win32") {
+			// Set code page to UTF-8 for better Chinese/Unicode support
+			env.CHCP = "65001"
+			// Python UTF-8 encoding
+			env.PYTHONIOENCODING = "utf-8"
+			// Node.js UTF-8 encoding
+			env.NODE_OPTIONS = process.env.NODE_OPTIONS
+				? `${process.env.NODE_OPTIONS} --encoding=utf-8`
+				: "--encoding=utf-8"
+			// PowerShell output encoding hint
+			env.PSDefaultParameterValues = "@{'Out-File:Encoding'='utf8'}"
+		}
+
 		// Set Oh My Zsh shell integration if enabled
 		if (Terminal.getTerminalZshOhMy()) {
 			env.ITERM_SHELL_INTEGRATION_INSTALLED = "Yes"

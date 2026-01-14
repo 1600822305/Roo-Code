@@ -116,6 +116,13 @@ pnpm vsix
 - `webview-ui/src/components/settings/ApiOptions.tsx` - UI 组件
 - `src/utils/resolveToolProtocol.ts` - 后端协议解析逻辑
 
+### 终端增强
+- `src/integrations/terminal/TerminalRegistry.ts` - 修复竞态条件
+- `src/integrations/terminal/Terminal.ts` - Windows UTF-8 编码支持
+- `src/integrations/terminal/ExecaTerminalProcess.ts` - 内联终端 UTF-8 编码
+- `src/core/tools/ExecuteCommandTool.ts` - 警告开关逻辑
+- `webview-ui/src/components/settings/TerminalSettings.tsx` - 警告开关 UI
+
 ## 注意事项
 
 1. **提交到 main 分支**：项目有 pre-commit hook 阻止直接提交到 main，使用 `--no-verify` 跳过
@@ -127,4 +134,7 @@ pnpm vsix
 - **日期**：2026-01-14
 - **官方版本**：v3.39.3 → v3.40.0
 - **同步提交数**：16 个
-- **自定义提交数**：6 个
+- **自定义修改**：
+  - 修复终端竞态条件（命令执行完但聊天卡住）
+  - 添加 Shell 集成警告开关（设置 → 终端）
+  - Windows UTF-8 编码支持（解决中文乱码）

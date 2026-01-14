@@ -94,28 +94,19 @@ export class TerminalRegistry {
 						return
 					}
 
-					if (!terminal.running) {
-						console.error(
-							"[TerminalRegistry] Shell execution end event received, but process is not running for terminal:",
-							{ terminalId: terminal?.id, command: process?.command, exitCode: e.exitCode },
-						)
-
-						terminal.busy = false
-						return
-					}
-
 					if (!process) {
-						console.error(
-							"[TerminalRegistry] Shell execution end event received on running terminal, but process is undefined:",
-							{ terminalId: terminal.id, exitCode: e.exitCode },
+						// Even without a process, we should still mark the terminal as not busy
+						console.warn(
+							"[TerminalRegistry] Shell execution end event received but process is undefined:",
+							{ terminalId: terminal.id, exitCode: e.exitCode, running: terminal.running },
 						)
-
+						terminal.busy = false
 						return
 					}
 
 					// Signal completion to any waiting processes.
 					terminal.shellExecutionComplete(exitDetails)
-					terminal.busy = false // Mark terminal as not busy when shell execution ends
+					// Note: shellExecutionComplete already sets busy = false
 				},
 			)
 

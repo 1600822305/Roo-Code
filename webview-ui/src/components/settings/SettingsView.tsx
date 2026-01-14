@@ -181,7 +181,8 @@ const SettingsView = forwardRef<SettingsViewRef, SettingsViewProps>(({ onDone, t
 		terminalOutputLineLimit,
 		terminalOutputCharacterLimit,
 		terminalShellIntegrationTimeout,
-		terminalShellIntegrationDisabled, // Added from upstream
+		terminalShellIntegrationDisabled,
+		terminalShellIntegrationWarningDisabled,
 		terminalCommandDelay,
 		terminalPowershellCounter,
 		terminalZshClearEolMark,
@@ -878,6 +879,7 @@ const SettingsView = forwardRef<SettingsViewRef, SettingsViewProps>(({ onDone, t
 								terminalOutputCharacterLimit={terminalOutputCharacterLimit}
 								terminalShellIntegrationTimeout={terminalShellIntegrationTimeout}
 								terminalShellIntegrationDisabled={terminalShellIntegrationDisabled}
+								terminalShellIntegrationWarningDisabled={terminalShellIntegrationWarningDisabled}
 								terminalCommandDelay={terminalCommandDelay}
 								terminalPowershellCounter={terminalPowershellCounter}
 								terminalZshClearEolMark={terminalZshClearEolMark}

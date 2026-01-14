@@ -231,6 +231,7 @@ export type ExtensionState = Pick<
 	| "terminalOutputCharacterLimit"
 	| "terminalShellIntegrationTimeout"
 	| "terminalShellIntegrationDisabled"
+	| "terminalShellIntegrationWarningDisabled"
 	| "terminalCommandDelay"
 	| "terminalPowershellCounter"
 	| "terminalZshClearEolMark"

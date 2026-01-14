@@ -38,18 +38,31 @@ export class ExecaTerminalProcess extends BaseTerminalProcess {
 		try {
 			this.isHot = true
 
+			// Build environment with UTF-8 support
+			const execEnv: Record<string, string | undefined> = {
+				...process.env,
+				// Ensure UTF-8 encoding for Ruby, CocoaPods, etc.
+				LANG: "en_US.UTF-8",
+				LC_ALL: "en_US.UTF-8",
+			}
+
+			// Windows-specific UTF-8 encoding support
+			if (process.platform === "win32") {
+				execEnv.PYTHONIOENCODING = "utf-8"
+				execEnv.PYTHONUTF8 = "1"
+				// Append to existing NODE_OPTIONS if present
+				execEnv.NODE_OPTIONS = process.env.NODE_OPTIONS
+					? `${process.env.NODE_OPTIONS} --encoding=utf-8`
+					: "--encoding=utf-8"
+			}
+
 			this.subprocess = execa({
 				shell: true,
 				cwd: this.terminal.getCurrentWorkingDirectory(),
 				all: true,
 				// Ignore stdin to ensure non-interactive mode and prevent hanging
 				stdin: "ignore",
-				env: {
-					...process.env,
-					// Ensure UTF-8 encoding for Ruby, CocoaPods, etc.
-					LANG: "en_US.UTF-8",
-					LC_ALL: "en_US.UTF-8",
-				},
+				env: execEnv,
 			})`${command}`
 
 			this.pid = this.subprocess.pid
