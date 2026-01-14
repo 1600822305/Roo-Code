@@ -740,6 +740,10 @@
 			"label": "Use Inline Terminal (recommended)",
 			"description": "Run commands in the Inline Terminal (chat) to bypass shell profiles/integration for faster, more reliable runs. When disabled Roo uses the VS Code terminal with your shell profile, prompts, and plugins. <0>Learn more</0>"
 		},
+		"shellIntegrationWarningDisabled": {
+			"label": "Disable Shell Integration Warning",
+			"description": "When enabled, suppresses the warning message when shell integration fails."
+		},
 		"commandDelay": {
 			"label": "Terminal command delay",
 			"description": "Adds a short pause after each command so the VS Code terminal can flush all output (bash/zsh: PROMPT_COMMAND sleep; PowerShell: start-sleep). Use only if you see missing tail output; otherwise leave at 0. <0>Learn more</0>"

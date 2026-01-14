@@ -21,6 +21,7 @@ type TerminalSettingsProps = HTMLAttributes<HTMLDivElement> & {
 	terminalOutputCharacterLimit?: number
 	terminalShellIntegrationTimeout?: number
 	terminalShellIntegrationDisabled?: boolean
+	terminalShellIntegrationWarningDisabled?: boolean
 	terminalCommandDelay?: number
 	terminalPowershellCounter?: boolean
 	terminalZshClearEolMark?: boolean
@@ -33,6 +34,7 @@ type TerminalSettingsProps = HTMLAttributes<HTMLDivElement> & {
 		| "terminalOutputCharacterLimit"
 		| "terminalShellIntegrationTimeout"
 		| "terminalShellIntegrationDisabled"
+		| "terminalShellIntegrationWarningDisabled"
 		| "terminalCommandDelay"
 		| "terminalPowershellCounter"
 		| "terminalZshClearEolMark"
@@ -48,6 +50,7 @@ export const TerminalSettings = ({
 	terminalOutputCharacterLimit,
 	terminalShellIntegrationTimeout,
 	terminalShellIntegrationDisabled,
+	terminalShellIntegrationWarningDisabled,
 	terminalCommandDelay,
 	terminalPowershellCounter,
 	terminalZshClearEolMark,
@@ -227,6 +230,24 @@ export const TerminalSettings = ({
 										{" "}
 									</VSCodeLink>
 								</Trans>
+							</div>
+						</SearchableSetting>
+
+						<SearchableSetting
+							settingId="terminal-shell-integration-warning-disabled"
+							section="terminal"
+							label={t("settings:terminal.shellIntegrationWarningDisabled.label")}>
+							<VSCodeCheckbox
+								checked={terminalShellIntegrationWarningDisabled ?? false}
+								onChange={(e: any) =>
+									setCachedStateField("terminalShellIntegrationWarningDisabled", e.target.checked)
+								}>
+								<span className="font-medium">
+									{t("settings:terminal.shellIntegrationWarningDisabled.label")}
+								</span>
+							</VSCodeCheckbox>
+							<div className="text-vscode-descriptionForeground text-sm mt-1">
+								{t("settings:terminal.shellIntegrationWarningDisabled.description")}
 							</div>
 						</SearchableSetting>
 

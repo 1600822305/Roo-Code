@@ -73,6 +73,7 @@ export class ExecuteCommandTool extends BaseTool<"execute_command"> {
 				terminalOutputLineLimit = 500,
 				terminalOutputCharacterLimit = DEFAULT_TERMINAL_OUTPUT_CHARACTER_LIMIT,
 				terminalShellIntegrationDisabled = true,
+				terminalShellIntegrationWarningDisabled = false,
 			} = providerState ?? {}
 
 			// Get command execution timeout from VSCode configuration (in seconds)
@@ -114,7 +115,9 @@ export class ExecuteCommandTool extends BaseTool<"execute_command"> {
 			} catch (error: unknown) {
 				const status: CommandExecutionStatus = { executionId, status: "fallback" }
 				provider?.postMessageToWebview({ type: "commandExecutionStatus", text: JSON.stringify(status) })
-				await task.say("shell_integration_warning")
+				if (!terminalShellIntegrationWarningDisabled) {
+					await task.say("shell_integration_warning")
+				}
 
 				// Invalidate pending ask from first execution to prevent race condition
 				task.supersedePendingAsk()
