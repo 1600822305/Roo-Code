@@ -399,6 +399,7 @@ const SettingsView = forwardRef<SettingsViewRef, SettingsViewProps>(({ onDone, t
 					terminalOutputCharacterLimit: terminalOutputCharacterLimit ?? 50_000,
 					terminalShellIntegrationTimeout: terminalShellIntegrationTimeout ?? 30_000,
 					terminalShellIntegrationDisabled,
+					terminalShellIntegrationWarningDisabled,
 					terminalCommandDelay,
 					terminalPowershellCounter,
 					terminalZshClearEolMark,
