@@ -184,14 +184,9 @@ export class TerminalProcess extends BaseTerminalProcess {
 			// and chunks may not be complete so you cannot rely on detecting or removing escape sequences mid-stream.
 			this.fullOutput += data
 
-			// For non-immediately returning commands we want to show loading spinner
-			// right away but this wouldn't happen until it emits a line break, so
-			// as soon as we get any output we emit to let webview know to show spinner
-			const now = Date.now()
-
-			if (this.isListening && (now - this.lastEmitTime_ms > 100 || this.lastEmitTime_ms === 0)) {
+			// Emit output immediately without debounce for real-time feedback
+			if (this.isListening) {
 				this.emitRemainingBufferIfListening()
-				this.lastEmitTime_ms = now
 			}
 
 			this.startHotTimer(data)
