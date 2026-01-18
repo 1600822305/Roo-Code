@@ -1,7 +1,7 @@
 import { useCallback, useState, memo, useMemo } from "react"
 import { useEvent } from "react-use"
 import { t } from "i18next"
-import { ChevronDown, OctagonX } from "lucide-react"
+import { ChevronDown, OctagonX, SquareTerminal } from "lucide-react"
 
 import { type ExtensionMessage, type CommandExecutionStatus, commandExecutionStatusSchema } from "@roo-code/types"
 
@@ -184,6 +184,20 @@ export const CommandExecution = ({ executionId, text, icon, title }: CommandExec
 								</StandardTooltip>
 							</div>
 						)}
+						<StandardTooltip content={t("chat:commandExecution.openInVscodeTerminal")}>
+							<Button
+								variant="ghost"
+								size="icon"
+								onClick={() =>
+									vscode.postMessage({
+										type: "openInVscodeTerminal",
+										commandToOpenInTerminal: command,
+										outputToOpenInTerminal: output,
+									})
+								}>
+								<SquareTerminal className="size-4" />
+							</Button>
+						</StandardTooltip>
 						{output.length > 0 && (
 							<Button variant="ghost" size="icon" onClick={() => setIsExpanded(!isExpanded)}>
 								<ChevronDown

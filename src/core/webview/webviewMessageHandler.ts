@@ -40,6 +40,7 @@ import { MessageEnhancer } from "./messageEnhancer"
 import { checkExistKey } from "../../shared/checkExistApiConfig"
 import { experimentDefault } from "../../shared/experiments"
 import { Terminal } from "../../integrations/terminal/Terminal"
+import { TerminalRegistry } from "../../integrations/terminal/TerminalRegistry"
 import { openFile } from "../../integrations/misc/open-file"
 import { openImage, saveImage } from "../../integrations/misc/image-handler"
 import { selectImages } from "../../integrations/misc/process-images"
@@ -668,6 +669,29 @@ export const webviewMessageHandler = async (
 		case "terminalOperation":
 			if (message.terminalOperation) {
 				provider.getCurrentTask()?.handleTerminalOperation(message.terminalOperation)
+			}
+			break
+		case "openInVscodeTerminal":
+			// Switch to VSCode terminal mode and show the terminal panel
+			// This disables inline terminal and enables real-time sync
+			{
+				// Disable inline terminal mode
+				await provider.contextProxy.setValue("terminalShellIntegrationDisabled", false)
+				Terminal.setShellIntegrationDisabled(false)
+
+				const cwd = provider.getCurrentTask()?.cwd || vscode.workspace.workspaceFolders?.[0]?.uri.fsPath
+				const taskId = provider.getCurrentTask()?.taskId
+
+				if (cwd) {
+					// Get or create a VSCode terminal and show it
+					const terminal = await TerminalRegistry.getOrCreateTerminal(cwd, taskId, "vscode")
+					if (terminal instanceof Terminal) {
+						terminal.showTerminal(false) // false = focus on terminal
+					}
+				}
+
+				// Update webview state
+				await provider.postStateToWebview()
 			}
 			break
 		case "clearTask":
