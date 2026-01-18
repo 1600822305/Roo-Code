@@ -136,6 +136,15 @@ pnpm vsix
 2. 显示/聚焦 VSCode 终端面板
 3. 后续命令在 VSCode 终端执行，输出实时同步到 webview
 
+### Shell Integration 修复
+- `src/integrations/terminal/TerminalProcess.ts` - 修复中止按钮 + 30秒超时机制
+
+**问题说明**：VSCode 存在 bug #237208，`onDidEndTerminalShellExecution` 事件可能不触发，导致命令卡住。
+
+**解决方案**：
+1. **中止按钮修复**：点击中止时强制触发完成事件，解除命令阻塞
+2. **30秒超时机制**：如果 shell_execution_complete 事件在 30 秒内未触发，自动完成命令
+
 ## 注意事项
 
 1. **提交到 main 分支**：项目有 pre-commit hook 阻止直接提交到 main，使用 `--no-verify` 跳过
