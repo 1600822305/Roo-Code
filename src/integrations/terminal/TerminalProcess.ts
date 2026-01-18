@@ -92,8 +92,29 @@ export class TerminalProcess extends BaseTerminalProcess {
 		})
 
 		// Create promise that resolves when shell execution completes for this terminal
+		// Add timeout to handle VSCode bug #237208 where onDidEndTerminalShellExecution may not fire
+		const SHELL_EXECUTION_TIMEOUT = 30000 // 30 seconds timeout
 		const shellExecutionComplete = new Promise<ExitCodeDetails>((resolve) => {
-			this.once("shell_execution_complete", (details: ExitCodeDetails) => resolve(details))
+			let resolved = false
+
+			const timeoutId = setTimeout(() => {
+				if (!resolved) {
+					resolved = true
+					console.warn(
+						"[TerminalProcess] Shell execution complete event not received within timeout. " +
+							"This is likely VSCode bug #237208. Forcing completion.",
+					)
+					resolve({ exitCode: undefined })
+				}
+			}, SHELL_EXECUTION_TIMEOUT)
+
+			this.once("shell_execution_complete", (details: ExitCodeDetails) => {
+				if (!resolved) {
+					resolved = true
+					clearTimeout(timeoutId)
+					resolve(details)
+				}
+			})
 		})
 
 		// Execute command
@@ -252,10 +273,20 @@ export class TerminalProcess extends BaseTerminalProcess {
 	}
 
 	public override abort() {
-		if (this.isListening) {
-			// Send SIGINT using CTRL+C
-			this.terminal.terminal.sendText("\x03")
-		}
+		// Send SIGINT using CTRL+C to the terminal
+		this.terminal.terminal.sendText("\x03")
+
+		// Force emit shell_execution_complete to unblock any waiting promises
+		// This is necessary because VSCode's onDidEndTerminalShellExecution may not fire
+		this.emit("shell_execution_complete", { exitCode: 130 }) // 130 = SIGINT
+
+		// Mark terminal as not busy
+		this.terminal.busy = false
+		this.terminal.setActiveStream(undefined)
+
+		// Emit completed and continue to unblock the process
+		this.emit("completed", "<command aborted by user>")
+		this.emit("continue")
 	}
 
 	public override hasUnretrievedOutput(): boolean {

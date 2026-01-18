@@ -201,6 +201,8 @@ export async function executeCommandInTerminal(
 	let shellIntegrationError: string | undefined
 	let hasAskedForCommandOutput = false
 
+	// Use VSCode terminal when shell integration is enabled, otherwise use execa
+	// When using VSCode terminal, output syncs to both webview and terminal panel in real-time
 	const terminalProvider = terminalShellIntegrationDisabled ? "execa" : "vscode"
 	const provider = await task.providerRef.deref()
 

@@ -95,6 +95,8 @@ export interface ExtensionMessage {
 		| "customToolsResult"
 		| "modes"
 		| "taskWithAggregatedCosts"
+		| "openInVscodeTerminal"
+		| "switchMode"
 	text?: string
 	payload?: any // eslint-disable-line @typescript-eslint/no-explicit-any
 	checkpointWarning?: {
@@ -524,6 +526,7 @@ export interface WebviewMessage {
 		| "requestModes"
 		| "switchMode"
 		| "debugSetting"
+		| "openInVscodeTerminal"
 	text?: string
 	editedMessageContent?: string
 	tab?: "settings" | "history" | "mcp" | "modes" | "chat" | "marketplace" | "cloud"
@@ -561,6 +564,8 @@ export interface WebviewMessage {
 	ids?: string[]
 	hasSystemPromptOverride?: boolean
 	terminalOperation?: "continue" | "abort"
+	commandToOpenInTerminal?: string
+	outputToOpenInTerminal?: string
 	messageTs?: number
 	restoreCheckpoint?: boolean
 	historyPreviewCollapsed?: boolean

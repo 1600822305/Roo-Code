@@ -12,6 +12,9 @@ export class Terminal extends BaseTerminal {
 
 	public cmdCounter: number = 0
 
+	// Track if terminal panel is visible
+	private _isTerminalVisible: boolean = false
+
 	constructor(id: number, terminal: vscode.Terminal | undefined, cwd: string) {
 		super("vscode", id, cwd)
 
@@ -22,6 +25,21 @@ export class Terminal extends BaseTerminal {
 		if (Terminal.getTerminalZdotdir()) {
 			ShellIntegrationManager.terminalTmpDirs.set(id, env.ZDOTDIR)
 		}
+	}
+
+	/**
+	 * Show the terminal in VSCode terminal panel
+	 */
+	public showTerminal(preserveFocus: boolean = true): void {
+		this._isTerminalVisible = true
+		this.terminal.show(preserveFocus)
+	}
+
+	/**
+	 * Check if terminal is visible
+	 */
+	public isTerminalVisible(): boolean {
+		return this._isTerminalVisible
 	}
 
 	/**
