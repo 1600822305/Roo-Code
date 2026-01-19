@@ -24,6 +24,7 @@ import { applyDiffTool } from "../tools/MultiApplyDiffTool"
 import { searchAndReplaceTool } from "../tools/SearchAndReplaceTool"
 import { searchReplaceTool } from "../tools/SearchReplaceTool"
 import { editFileTool } from "../tools/EditFileTool"
+import { multiEditFileTool } from "../tools/MultiEditFileTool"
 import { applyPatchTool } from "../tools/ApplyPatchTool"
 import { searchFilesTool } from "../tools/SearchFilesTool"
 import { browserActionTool } from "../tools/BrowserActionTool"
@@ -420,6 +421,8 @@ export async function presentAssistantMessage(cline: Task) {
 						return `[${block.name} for '${block.params.file_path}']`
 					case "edit_file":
 						return `[${block.name} for '${block.params.file_path}']`
+					case "multi_edit_file":
+						return `[${block.name} for '${block.params.path}']`
 					case "apply_patch":
 						return `[${block.name}]`
 					case "list_files":
@@ -953,6 +956,16 @@ export async function presentAssistantMessage(cline: Task) {
 				case "edit_file":
 					await checkpointSaveAndMark(cline)
 					await editFileTool.handle(cline, block as ToolUse<"edit_file">, {
+						askApproval,
+						handleError,
+						pushToolResult,
+						removeClosingTag,
+						toolProtocol,
+					})
+					break
+				case "multi_edit_file":
+					await checkpointSaveAndMark(cline)
+					await multiEditFileTool.handle(cline, block as ToolUse<"multi_edit_file">, {
 						askApproval,
 						handleError,
 						pushToolResult,

@@ -26,6 +26,7 @@ import { getCodebaseSearchDescription } from "./codebase-search"
 import { getUpdateTodoListDescription } from "./update-todo-list"
 import { getRunSlashCommandDescription } from "./run-slash-command"
 import { getGenerateImageDescription } from "./generate-image"
+import { getMultiEditFileDescription } from "./multi-edit-file"
 
 // Map of tool names to their description functions
 const toolDescriptionMap: Record<string, (args: ToolArgs) => string | undefined> = {
@@ -48,6 +49,7 @@ const toolDescriptionMap: Record<string, (args: ToolArgs) => string | undefined>
 	update_todo_list: (args) => getUpdateTodoListDescription(args),
 	run_slash_command: () => getRunSlashCommandDescription(),
 	generate_image: (args) => getGenerateImageDescription(args),
+	multi_edit_file: (args) => getMultiEditFileDescription(args),
 }
 
 export function getToolDescriptionsForMode(

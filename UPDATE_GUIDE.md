@@ -145,6 +145,28 @@ pnpm vsix
 1. **中止按钮修复**：点击中止时强制触发完成事件，解除命令阻塞
 2. **30秒超时机制**：如果 shell_execution_complete 事件在 30 秒内未触发，自动完成命令
 
+### multi_edit_file 工具（类似 Cascade/Windsurf）
+
+**涉及文件**：
+- `packages/types/src/tool.ts` - 添加 `multi_edit_file` 到 toolNames
+- `src/shared/tools.ts` - 添加类型定义、TOOL_GROUPS、toolParamNames
+- `src/core/tools/MultiEditFileTool.ts` - 工具核心实现
+- `src/core/prompts/tools/native-tools/multi_edit_file.ts` - Native 提示词
+- `src/core/prompts/tools/multi-edit-file.ts` - XML 提示词
+- `src/core/prompts/tools/index.ts` - toolDescriptionMap 注册
+- `src/core/prompts/tools/native-tools/index.ts` - 导出工具
+- `src/core/assistant-message/presentAssistantMessage.ts` - 工具调度注册
+
+**功能说明**：一次调用对同一文件执行多处编辑，支持两种模式：
+1. **字符串匹配**：`{old_string, new_string}` - 查找替换（只替换首次匹配）
+2. **行号编辑**：`{start_line, end_line, content}` - 按行号替换/插入/删除
+
+**特性**：
+- 编辑按声明顺序执行，每个编辑基于前一编辑结果
+- 原子操作（任一编辑失败则全部回滚）
+- 越界行号返回警告并追加到文件末尾
+- VSCode diff 预览集成
+
 ## 注意事项
 
 1. **提交到 main 分支**：项目有 pre-commit hook 阻止直接提交到 main，使用 `--no-verify` 跳过

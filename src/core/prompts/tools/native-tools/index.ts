@@ -16,6 +16,7 @@ import runSlashCommand from "./run_slash_command"
 import searchAndReplace from "./search_and_replace"
 import searchReplace from "./search_replace"
 import edit_file from "./edit_file"
+import multi_edit_file from "./multi_edit_file"
 import searchFiles from "./search_files"
 import switchMode from "./switch_mode"
 import updateTodoList from "./update_todo_list"
@@ -70,6 +71,7 @@ export function getNativeTools(options: NativeToolsOptions = {}): OpenAI.Chat.Ch
 		searchAndReplace,
 		searchReplace,
 		edit_file,
+		multi_edit_file,
 		searchFiles,
 		switchMode,
 		updateTodoList,
