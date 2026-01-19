@@ -76,6 +76,7 @@ export const toolParamNames = [
 	"old_string", // search_replace and edit_file parameter
 	"new_string", // search_replace and edit_file parameter
 	"expected_replacements", // edit_file parameter for multiple occurrences
+	"edits", // multi_edit_file parameter for edit operations array
 ] as const
 
 export type ToolParamName = (typeof toolParamNames)[number]
@@ -86,6 +87,22 @@ export type ToolProtocol = "xml" | "native"
  * Type map defining the native (typed) argument structure for each tool.
  * Tools not listed here will fall back to `any` for backward compatibility.
  */
+/**
+ * Edit operation types for multi_edit_file tool
+ */
+export type StringMatchEdit = {
+	old_string: string
+	new_string: string
+}
+
+export type LineRangeEdit = {
+	start_line: number
+	end_line: number
+	content: string
+}
+
+export type MultiEditOperation = StringMatchEdit | LineRangeEdit
+
 export type NativeToolArgs = {
 	access_mcp_resource: { server_name: string; uri: string }
 	read_file: { files: FileEntry[] }
@@ -95,6 +112,7 @@ export type NativeToolArgs = {
 	search_and_replace: { path: string; operations: Array<{ search: string; replace: string }> }
 	search_replace: { file_path: string; old_string: string; new_string: string }
 	edit_file: { file_path: string; old_string: string; new_string: string; expected_replacements?: number }
+	multi_edit_file: { path: string; edits: MultiEditOperation[] }
 	apply_patch: { patch: string }
 	ask_followup_question: {
 		question: string
@@ -252,6 +270,7 @@ export const TOOL_DISPLAY_NAMES: Record<ToolName, string> = {
 	search_and_replace: "apply changes using search and replace",
 	search_replace: "apply single search and replace",
 	edit_file: "edit files using search and replace",
+	multi_edit_file: "apply multiple edits to a file",
 	apply_patch: "apply patches using codex format",
 	search_files: "search files",
 	list_files: "list files",
@@ -275,7 +294,7 @@ export const TOOL_GROUPS: Record<ToolGroup, ToolGroupConfig> = {
 		tools: ["read_file", "fetch_instructions", "search_files", "list_files", "codebase_search"],
 	},
 	edit: {
-		tools: ["apply_diff", "write_to_file", "generate_image"],
+		tools: ["apply_diff", "write_to_file", "generate_image", "multi_edit_file"],
 		customTools: ["search_and_replace", "search_replace", "edit_file", "apply_patch"],
 	},
 	browser: {
