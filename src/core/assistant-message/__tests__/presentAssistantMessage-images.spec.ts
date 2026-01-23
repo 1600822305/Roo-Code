@@ -37,7 +37,6 @@ describe("presentAssistantMessage - Image Handling in Native Tool Calls", () => 
 			didCompleteReadingStream: false,
 			didRejectTool: false,
 			didAlreadyUseTool: false,
-			diffEnabled: false,
 			consecutiveMistakeCount: 0,
 			api: {
 				getModel: () => ({ id: "test-model", info: {} }),
