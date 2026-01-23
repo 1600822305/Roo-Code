@@ -107,7 +107,6 @@ export interface ExtensionMessage {
 		| "worktreeDefaults"
 		| "worktreeIncludeStatus"
 		| "branchWorktreeIncludeResult"
-		| "mergeWorktreeResult"
 		| "openInVscodeTerminal"
 	text?: string
 	payload?: any // eslint-disable-line @typescript-eslint/no-explicit-any
@@ -252,10 +251,6 @@ export interface ExtensionMessage {
 	worktreeIncludeStatus?: WorktreeIncludeStatus
 	hasGitignore?: boolean
 	gitignoreContent?: string
-	hasConflicts?: boolean
-	conflictingFiles?: string[]
-	sourceBranch?: string
-	targetBranch?: string
 	// branchWorktreeIncludeResult
 	branch?: string
 	hasWorktreeInclude?: boolean
@@ -608,7 +603,6 @@ export interface WebviewMessage {
 		| "checkBranchWorktreeInclude"
 		| "createWorktreeInclude"
 		| "checkoutBranch"
-		| "mergeWorktree"
 		| "openInVscodeTerminal"
 	text?: string
 	editedMessageContent?: string
@@ -708,8 +702,6 @@ export interface WebviewMessage {
 	worktreeCreateNewBranch?: boolean
 	worktreeForce?: boolean
 	worktreeNewWindow?: boolean
-	worktreeTargetBranch?: string
-	worktreeDeleteAfterMerge?: boolean
 	worktreeIncludeContent?: string
 }
 
