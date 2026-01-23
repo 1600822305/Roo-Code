@@ -10,7 +10,6 @@ import { t } from "../../i18n"
 
 import { defaultModeSlug, getModeBySlug } from "../../shared/modes"
 import type { ToolParamName, ToolResponse, ToolUse, McpToolUse } from "../../shared/tools"
-import { experiments, EXPERIMENT_IDS } from "../../shared/experiments"
 
 import { AskIgnoredError } from "../task/AskIgnoredError"
 import { Task } from "../task/Task"
@@ -20,7 +19,6 @@ import { listFilesTool } from "../tools/ListFilesTool"
 import { readFileTool } from "../tools/ReadFileTool"
 import { TOOL_PROTOCOL } from "@roo-code/types"
 import { writeToFileTool } from "../tools/WriteToFileTool"
-import { applyDiffTool } from "../tools/MultiApplyDiffTool"
 import { searchAndReplaceTool } from "../tools/SearchAndReplaceTool"
 import { searchReplaceTool } from "../tools/SearchReplaceTool"
 import { editFileTool } from "../tools/EditFileTool"
@@ -892,47 +890,16 @@ export async function presentAssistantMessage(cline: Task) {
 						toolProtocol,
 					})
 					break
-				case "apply_diff": {
+				case "apply_diff":
 					await checkpointSaveAndMark(cline)
-
-					// Check if this tool call came from native protocol by checking for ID
-					// Native calls always have IDs, XML calls never do
-					if (toolProtocol === TOOL_PROTOCOL.NATIVE) {
-						await applyDiffToolClass.handle(cline, block as ToolUse<"apply_diff">, {
-							askApproval,
-							handleError,
-							pushToolResult,
-							removeClosingTag,
-							toolProtocol,
-						})
-						break
-					}
-
-					// Get the provider and state to check experiment settings
-					const provider = cline.providerRef.deref()
-					let isMultiFileApplyDiffEnabled = false
-
-					if (provider) {
-						const state = await provider.getState()
-						isMultiFileApplyDiffEnabled = experiments.isEnabled(
-							state.experiments ?? {},
-							EXPERIMENT_IDS.MULTI_FILE_APPLY_DIFF,
-						)
-					}
-
-					if (isMultiFileApplyDiffEnabled) {
-						await applyDiffTool(cline, block, askApproval, handleError, pushToolResult, removeClosingTag)
-					} else {
-						await applyDiffToolClass.handle(cline, block as ToolUse<"apply_diff">, {
-							askApproval,
-							handleError,
-							pushToolResult,
-							removeClosingTag,
-							toolProtocol,
-						})
-					}
+					await applyDiffToolClass.handle(cline, block as ToolUse<"apply_diff">, {
+						askApproval,
+						handleError,
+						pushToolResult,
+						removeClosingTag,
+						toolProtocol,
+					})
 					break
-				}
 				case "search_and_replace":
 					await checkpointSaveAndMark(cline)
 					await searchAndReplaceTool.handle(cline, block as ToolUse<"search_and_replace">, {
