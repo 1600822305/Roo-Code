@@ -29,7 +29,6 @@ import {
 	getSystemInfoSection,
 	getObjectiveSection,
 	getSharedToolUseSection,
-	getMcpServersSection,
 	getToolUseGuidelinesSection,
 	getCapabilitiesSection,
 	getModesSection,
@@ -90,16 +89,8 @@ async function generatePrompt(
 	// Determine the effective protocol (defaults to 'xml')
 	const effectiveProtocol = getEffectiveProtocol(settings?.toolProtocol)
 
-	const [modesSection, mcpServersSection, skillsSection] = await Promise.all([
+	const [modesSection, skillsSection] = await Promise.all([
 		getModesSection(context),
-		shouldIncludeMcp
-			? getMcpServersSection(
-					mcpHub,
-					diffStrategy,
-					enableMcpServerCreation,
-					!isNativeProtocol(effectiveProtocol),
-				)
-			: Promise.resolve(""),
 		getSkillsSection(skillsManager, mode as string),
 	])
 
@@ -141,8 +132,6 @@ ${markdownFormattingSection()}
 ${getSharedToolUseSection(effectiveProtocol, experiments)}${toolsCatalog}
 
 ${getToolUseGuidelinesSection(effectiveProtocol, experiments)}
-
-${mcpServersSection}
 
 ${getCapabilitiesSection(cwd, shouldIncludeMcp ? mcpHub : undefined)}
 
