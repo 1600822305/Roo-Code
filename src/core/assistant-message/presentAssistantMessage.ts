@@ -127,7 +127,11 @@ export async function presentAssistantMessage(cline: Task) {
 				break
 			}
 
-			if (cline.didAlreadyUseTool) {
+			// Get parallel tool calling state from experiments
+			const mcpState = await cline.providerRef.deref()?.getState()
+			const mcpParallelToolCallsEnabled = mcpState?.experiments?.multipleNativeToolCalls ?? false
+
+			if (!mcpParallelToolCallsEnabled && cline.didAlreadyUseTool) {
 				const toolCallId = mcpBlock.id
 				const errorMessage = `MCP tool [${mcpBlock.name}] was not executed because a tool has already been used in this message. Only one tool may be used per message.`
 
@@ -196,7 +200,10 @@ export async function presentAssistantMessage(cline: Task) {
 				}
 
 				hasToolResult = true
-				cline.didAlreadyUseTool = true
+				// Only set didAlreadyUseTool when parallel tool calling is disabled
+				if (!mcpParallelToolCallsEnabled) {
+					cline.didAlreadyUseTool = true
+				}
 			}
 
 			const toolDescription = () => `[mcp_tool: ${mcpBlock.serverName}/${mcpBlock.toolName}]`
@@ -483,7 +490,10 @@ export async function presentAssistantMessage(cline: Task) {
 				break
 			}
 
-			if (cline.didAlreadyUseTool) {
+			// Get parallel tool calling state from experiments (stateExperiments already fetched above)
+			const parallelToolCallsEnabled = stateExperiments?.multipleNativeToolCalls ?? false
+
+			if (!parallelToolCallsEnabled && cline.didAlreadyUseTool) {
 				// Ignore any content after a tool has already been used.
 				// For native protocol, we must send a tool_result for every tool_use to avoid API errors
 				const toolCallId = block.id
@@ -625,18 +635,12 @@ export async function presentAssistantMessage(cline: Task) {
 
 				// For XML protocol: Only one tool per message is allowed
 				// For native protocol with experimental flag enabled: Multiple tools can be executed in sequence
-				// For native protocol with experimental flag disabled: Single tool per message (default safe behavior)
-				if (toolProtocol === TOOL_PROTOCOL.XML) {
-					// Once a tool result has been collected, ignore all other tool
-					// uses since we should only ever present one tool result per
-					// message (XML protocol only).
-					cline.didAlreadyUseTool = true
-				} else if (toolProtocol === TOOL_PROTOCOL.NATIVE && !isMultipleNativeToolCallsEnabled) {
-					// For native protocol with experimental flag disabled, enforce single tool per message
+				hasToolResult = true
+				// XML protocol always enforces single tool per message.
+				// Native protocol respects parallelToolCallsEnabled setting.
+				if (toolProtocol === TOOL_PROTOCOL.XML || !parallelToolCallsEnabled) {
 					cline.didAlreadyUseTool = true
 				}
-				// If toolProtocol is NATIVE and isMultipleNativeToolCallsEnabled is true,
-				// allow multiple tool calls in sequence (don't set didAlreadyUseTool)
 			}
 
 			const askApproval = async (

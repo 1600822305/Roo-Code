@@ -18,8 +18,8 @@ describe("getSharedToolUseSection", () => {
 		})
 	})
 
-	describe("native protocol", () => {
-		it("should include one tool per message requirement when experiment is disabled", () => {
+	describe("native protocol with MULTIPLE_NATIVE_TOOL_CALLS disabled (default)", () => {
+		it("should include one tool per message requirement when experiment is disabled (default)", () => {
 			// No experiment flags passed (default: disabled)
 			const section = getSharedToolUseSection(TOOL_PROTOCOL.NATIVE)
 
