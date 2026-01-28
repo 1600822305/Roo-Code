@@ -18,6 +18,7 @@ import { fetchInstructionsTool } from "../tools/FetchInstructionsTool"
 import { listFilesTool } from "../tools/ListFilesTool"
 import { readFileTool } from "../tools/ReadFileTool"
 import { TOOL_PROTOCOL } from "@roo-code/types"
+import { readCommandOutputTool } from "../tools/ReadCommandOutputTool"
 import { writeToFileTool } from "../tools/WriteToFileTool"
 import { searchAndReplaceTool } from "../tools/SearchAndReplaceTool"
 import { searchReplaceTool } from "../tools/SearchReplaceTool"
@@ -437,8 +438,10 @@ export async function presentAssistantMessage(cline: Task) {
 						return `[${block.name}]`
 					case "switch_mode":
 						return `[${block.name} to '${block.params.mode_slug}'${block.params.reason ? ` because: ${block.params.reason}` : ""}]`
-					case "codebase_search": // Add case for the new tool
+					case "codebase_search":
 						return `[${block.name} for '${block.params.query}']`
+					case "read_command_output":
+						return `[${block.name} for '${block.params.artifact_id}']`
 					case "update_todo_list":
 						return `[${block.name}]`
 					case "new_task": {
@@ -1009,6 +1012,15 @@ export async function presentAssistantMessage(cline: Task) {
 						toolProtocol,
 					})
 					break
+				case "read_command_output":
+					await readCommandOutputTool.handle(cline, block as ToolUse<"read_command_output">, {
+						askApproval,
+						handleError,
+						pushToolResult,
+						removeClosingTag,
+						toolProtocol,
+					})
+					break
 				case "use_mcp_tool":
 					await useMcpToolTool.handle(cline, block as ToolUse<"use_mcp_tool">, {
 						askApproval,
@@ -1238,4 +1250,44 @@ async function checkpointSaveAndMark(task: Task) {
 	} catch (error) {
 		console.error(`[Task#presentAssistantMessage] Error saving checkpoint: ${error.message}`, error)
 	}
+}
+
+function containsXmlToolMarkup(text: string): boolean {
+	// Keep this intentionally narrow: only reject XML-style tool tags matching our tool names.
+	const textWithoutCodeBlocks = text
+		.replace(/```[\s\S]*?```/g, "")
+		.replace(/`[^`]+`/g, "")
+
+	const lower = textWithoutCodeBlocks.toLowerCase()
+	if (!lower.includes("<") || !lower.includes(">")) {
+		return false
+	}
+
+	const toolNames = [
+		"access_mcp_resource",
+		"apply_diff",
+		"apply_patch",
+		"ask_followup_question",
+		"attempt_completion",
+		"browser_action",
+		"codebase_search",
+		"edit_file",
+		"execute_command",
+		"fetch_instructions",
+		"generate_image",
+		"list_files",
+		"multi_edit_file",
+		"new_task",
+		"read_command_output",
+		"read_file",
+		"search_and_replace",
+		"search_files",
+		"search_replace",
+		"switch_mode",
+		"update_todo_list",
+		"use_mcp_tool",
+		"write_to_file",
+	] as const
+
+	return toolNames.some((name) => lower.includes(`<${name}`) || lower.includes(`</${name}`))
 }
