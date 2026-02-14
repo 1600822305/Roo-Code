@@ -85,6 +85,15 @@ interface ReadCommandOutputParams {
 export class ReadCommandOutputTool extends BaseTool<"read_command_output"> {
 	readonly name = "read_command_output" as const
 
+	parseLegacy(params: Partial<Record<string, string>>): ReadCommandOutputParams {
+		return {
+			artifact_id: params.artifact_id || "",
+			search: params.search,
+			offset: params.offset ? parseInt(params.offset, 10) : undefined,
+			limit: params.limit ? parseInt(params.limit, 10) : undefined,
+		}
+	}
+
 	/**
 	 * Execute the read_command_output tool.
 	 *

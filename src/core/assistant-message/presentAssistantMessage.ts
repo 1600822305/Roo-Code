@@ -630,8 +630,8 @@ export async function presentAssistantMessage(cline: Task) {
 				// For native protocol with experimental flag enabled: Multiple tools can be executed in sequence
 				hasToolResult = true
 				// XML protocol always enforces single tool per message.
-				// Native protocol respects parallelToolCallsEnabled setting.
-				if (toolProtocol === TOOL_PROTOCOL.XML || !parallelToolCallsEnabled) {
+				// Native protocol respects isMultipleNativeToolCallsEnabled setting.
+				if (toolProtocol === TOOL_PROTOCOL.XML || !isMultipleNativeToolCallsEnabled) {
 					cline.didAlreadyUseTool = true
 				}
 			}

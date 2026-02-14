@@ -4391,15 +4391,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 			allowedFunctionNames = toolsResult.allowedFunctionNames
 		}
 
-<<<<<<< HEAD
 		const parallelToolCallsEnabled = state?.experiments?.multipleNativeToolCalls ?? false
-=======
-		const shouldIncludeTools = allTools.length > 0
-
-		// Parallel tool calls are disabled - feature is on hold
-		// Previously resolved from experiments.isEnabled(..., EXPERIMENT_IDS.MULTIPLE_NATIVE_TOOL_CALLS)
-		const parallelToolCallsEnabled = false
->>>>>>> 5b3626f1a (Revert "Enable parallel tool calling with new_task isolation safeguards" (#11004))
 
 		const metadata: ApiHandlerCreateMessageMetadata = {
 			mode: mode,
