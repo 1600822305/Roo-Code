@@ -118,23 +118,10 @@ pnpm vsix
 
 ### 终端增强
 - `src/integrations/terminal/TerminalRegistry.ts` - 修复竞态条件
-- `src/integrations/terminal/Terminal.ts` - Windows UTF-8 编码支持 + 终端面板显示方法
+- `src/integrations/terminal/Terminal.ts` - Windows UTF-8 编码支持
 - `src/integrations/terminal/ExecaTerminalProcess.ts` - 内联终端 UTF-8 编码
-- `src/integrations/terminal/RooPseudoterminal.ts` - Pseudoterminal 实现（双向同步）
 - `src/core/tools/ExecuteCommandTool.ts` - 警告开关逻辑
-- `src/core/webview/webviewMessageHandler.ts` - 终端同步按钮处理
 - `webview-ui/src/components/settings/TerminalSettings.tsx` - 警告开关 UI
-- `webview-ui/src/components/chat/CommandExecution.tsx` - 终端同步按钮 UI
-
-### 终端同步功能（类似 Windsurf/Cursor）
-- `packages/types/src/vscode-extension-host.ts` - 添加 `openInVscodeTerminal` 消息类型
-- `webview-ui/src/i18n/locales/en/chat.json` - 英文翻译
-- `webview-ui/src/i18n/locales/zh-CN/chat.json` - 中文翻译
-
-**功能说明**：点击命令执行区域的终端图标，可以：
-1. 切换到 VSCode 终端模式（关闭内联终端）
-2. 显示/聚焦 VSCode 终端面板
-3. 后续命令在 VSCode 终端执行，输出实时同步到 webview
 
 ### Shell Integration 修复
 - `src/integrations/terminal/TerminalProcess.ts` - 修复中止按钮 + 30秒超时机制

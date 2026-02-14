@@ -258,8 +258,7 @@
 		"expandOutput": "Expand output",
 		"collapseOutput": "Collapse output",
 		"expandManagement": "Expand command management section",
-		"collapseManagement": "Collapse command management section",
-		"openInVscodeTerminal": "Sync to VSCode Terminal"
+		"collapseManagement": "Collapse command management section"
 	},
 	"response": "Response",
 	"arguments": "Arguments",
