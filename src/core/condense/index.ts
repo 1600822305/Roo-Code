@@ -10,7 +10,6 @@ import { maybeRemoveImageBlocks } from "../../api/transform/image-cleaning"
 import { findLast } from "../../shared/array"
 import { supportPrompt } from "../../shared/support-prompt"
 
-<<<<<<< HEAD
 /**
  * Checks if a message contains tool_result blocks.
  * For native tools protocol, user messages with tool_result blocks require
