@@ -357,7 +357,9 @@ export class AwsBedrockHandler extends BaseProvider implements SingleCompletionH
 		},
 	): ApiStream {
 		const modelConfig = this.getModel()
-		const usePromptCache = Boolean(this.options.awsUsePromptCache && this.supportsAwsPromptCache(modelConfig))
+		const usePromptCache = Boolean(
+			(this.options.awsUsePromptCache ?? true) && this.supportsAwsPromptCache(modelConfig),
+		)
 
 		// Determine early if native tools should be used (needed for message conversion)
 		const supportsNativeTools = modelConfig.info.supportsNativeTools ?? false
