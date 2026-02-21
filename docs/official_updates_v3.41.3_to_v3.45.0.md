@@ -1,8 +1,8 @@
-# Roo-Code 官方更新日志（v3.41.3 → v3.45.0+）
+# Roo-Code 官方更新日志（v3.41.3 → v3.50.4+）
 
-> 当前本地版本：v3.41.3 | 官方最新版本：v3.45.0+（含后续热修复）
-> 共 255 个提交，按时间顺序排列（从旧到新）
-> 生成日期：2026-02-14
+> 当前本地版本：v3.41.3 | 官方最新版本：v3.50.4+
+> 共 313 个提交，按时间顺序排列（从旧到新）
+> 生成日期：2026-02-22（更新）
 
 ---
 
@@ -28,6 +28,14 @@
 | v1.111.0 | `bd4cd07e8` | 内部版本号 |
 | **最终状态** | `6cfa82f57` | **回滚到 pre-AI-SDK 状态** |
 | **最终状态** | `d52b6834e` | **重新添加回滚后的 bug 修复和功能** |
+| v3.48.0 | `24958f3a3` | 正式发布 |
+| v3.48.1 | `2d21e80ad` | 热修复 |
+| v1.112.0 | `00075684f` | 内部版本号 |
+| v3.49.0 | `5f87f83d9` | 正式发布 |
+| v3.50.0 | `8743020f4` | 正式发布 |
+| v3.50.2 | `9918e837b` | 热修复 |
+| v3.50.3 | `6bd6dc61a` | 热修复 |
+| v3.50.4 | `ab61ee2cd` | 热修复 |
 
 ---
 
@@ -323,6 +331,69 @@
 | 254 | `594ed62f9` | fix | 恢复默认代码所有者 |
 | 255 | `d52b6834e` | feat | **重新添加回滚后的 bug 修复和功能（Step 2）** |
 
+### 第 256-313 条（回滚恢复 → v3.50.4）
+
+| # | Hash | 类型 | 中文说明 |
+|---|------|------|---------|
+| 256 | `b2b77809f` | feat | ⭐ **Reapply Batch 1：22 个无冲突的非 AI-SDK cherry-pick**（Codex 风格 read_file 重构、read_file 缩进读取器、footgun prompting 移除、search_and_replace→edit 重命名、disabledTools 设置、嵌套子任务递归树、连续工具调用批量显示、API 配置锁定切换、任务头部视觉状态高亮等） |
+| 257 | `bcb8c8191` | feat | ⭐ **Reapply Batch 2：9 个小冲突的非 AI-SDK cherry-pick**（API 配置锁定修复、Gemini thinkingLevel 验证、空流处理、GLM-5 模型支持、连续工具调用批量显示 UI 等） |
+| 258 | `04ffb64bb` | feat | ⭐ **Reapply Batches 3-4：Skills、浏览器移除、Provider 移除**（6 个大冲突 cherry-pick，含 Skills 管理 UI、内置 Skills 移除、浏览器功能移除、9 个低使用率 Provider 移除、Slash Commands 设置） |
+| 259 | `27a78833c` | feat | CLI：添加 stdin 流模式 |
+| 260 | `aaee5a2c0` | chore | CLI v0.0.54 发布准备 |
+| 261 | `6ef149d56` | docs | 移除 reapplication-plan.md 文档 |
+| 262 | `77ed60a17` | fix | AskFollowupQuestionTool 添加 follow_up 参数验证 |
+| 263 | `3e24e21c3` | fix | 任务恢复时保留压缩摘要 |
+| 264 | `dc243e4cf` | feat | 营销网站：添加博客区域和初始文章 |
+| 265 | `90e2451ad` | feat | **跨所有 Provider 添加 Claude Sonnet 4.6 支持** |
+| 266 | `24958f3a3` | release | **Release v3.48.0** |
+| 267 | `17d534e3f` | fix | CLI stdin 流模式下不应创建新任务 |
+| 268 | `be2b41478` | chore | CLI v0.0.55 发布准备 |
+| 269 | `1b699d904` | fix | 简化 Claude 4 模型的 1M 上下文区域文案 |
+| 270 | `44df43063` | chore | Changeset 版本号更新 |
+| 271 | `bfbfaf6d4` | fix | 返回 McpHub 实例前等待 MCP 服务器初始化完成 |
+| 272 | `d57529588` | feat | 添加 DeleteQueuedMessage IPC 命令 |
+| 273 | `7bc966ee0` | fix | 修正 Bedrock Claude Sonnet 4.6 模型 ID |
+| 274 | `2d21e80ad` | release | **Release v3.48.1** |
+| 275 | `d9b42f57f` | fix | 修复 revert 回归后 @roo-code/types 元数据版本号 |
+| 276 | `b91b20536` | chore | Changeset 版本号更新 |
+| 277 | `00075684f` | release | Release: v1.112.0 |
+| 278 | `d7359ff22` | feat | ⭐ **每个会话独立的文件变更面板** |
+| 279 | `67ea856fd` | feat | ⭐ **每工作区索引 opt-in 和停止/取消控制** |
+| 280 | `f86427054` | fix | 重新设计聊天 rehydration 滚动生命周期 |
+| 281 | `b598efb42` | feat | ⭐ **每任务基于文件的历史存储（跨实例安全）** |
+| 282 | `5f87f83d9` | release | **Release v3.49.0** |
+| 283 | `c97444337` | chore | Changeset 版本号更新 |
+| 284 | `ffec9ac1e` | feat | CLI：NDJSON stdin 协议、list 子命令、模块化 run.ts |
+| 285 | `00c35e691` | chore | CLI v0.1.0 发布准备 |
+| 286 | `aff46b14e` | chore | 移除集成测试 |
+| 287 | `b64334b2b` | feat | **添加 Gemini 3.1 Pro 支持并设置 Gemini 默认模型** |
+| 288 | `8743020f4` | release | **Release v3.50.0** |
+| 289 | `d8cfbfdb0` | chore | Changeset 版本号更新 |
+| 290 | `159bf2e9f` | fix | 设置搜索结果宽度与搜索输入框一致 |
+| 291 | `d00f1a2bb` | feat | ⚠️ **从扩展中移除 Roomote Control** |
+| 292 | `9a8af6193` | feat | OpenAI Codex：添加 gpt-5.3-codex-spark 模型元数据 |
+| 293 | `ea7da97a4` | fix | OpenAI：处理 done-only/content-part 响应 |
+| 294 | `318bb928e` | feat | ⭐ **execute_command 工具添加 timeout 参数** |
+| 295 | `0d5b932d2` | feat | Vertex 和 Gemini Provider 禁用 apply_diff 并启用 edit 工具 |
+| 296 | `5db2062d0` | feat | FileChangesPanel 头部显示聚合 +/− 行数 |
+| 297 | `492006d53` | feat | 任务操作中复制按钮添加视觉反馈 |
+| 298 | `3a7a01f2f` | chore | Changeset 版本号更新 |
+| 299 | `27095553c` | fix | Bedrock：自定义 ARN 启用提示缓存并默认开启 |
+| 300 | `618aa6652` | feat | ⭐ **内联终端渲染与 VSCode 终端保持一致** |
+| 301 | `b34678488` | fix | 防止 git 模板泄漏到影子 checkpoint 仓库 |
+| 302 | `9918e837b` | release | **Release v3.50.2** |
+| 303 | `4288b0a72` | feat | **恢复 Unbound 作为 Provider** |
+| 304 | `93415c720` | fix | 修正 Vertex AI claude-sonnet-4-6 模型 ID |
+| 305 | `2991bc9a3` | chore | Changeset 版本号更新 |
+| 306 | `a55c85a8e` | ci | 在 PR review approval 时触发 code-qa 工作流 |
+| 307 | `6bd6dc61a` | release | **Release v3.50.3** |
+| 308 | `6b3097cb3` | revert | 回滚「PR review approval 触发 code-qa」 |
+| 309 | `ae09ee5a6` | chore | Changeset 版本号更新 |
+| 310 | `2df6e3899` | chore | 在 .tool-versions 中添加 pnpm 10.8.1 |
+| 311 | `62a7bd735` | feat | 添加 MiniMax M2.5 模型 |
+| 312 | `ab61ee2cd` | release | **Release v3.50.4** |
+| 313 | `aca95ccd0` | chore | Changeset 版本号更新 |
+
 ---
 
 ## 三、重大变更分类汇总
@@ -336,17 +407,26 @@
    - **影响**：你的「工具协议选择器」功能将无法简单恢复
 
 2. **search_and_replace 重命名为 edit**
-   - `#231` 工具重命名 + 统一编辑工具族 UI
+   - `#231` 工具重命名 + 统一编辑工具族 UI（在 `#256` Reapply Batch 1 中重新应用）
    - **影响**：你的 `multi_edit_file` 工具可能需要适配
 
-3. **AI SDK 全面迁移 → 回滚**
-   - `#253` 最终回滚到 pre-AI-SDK 状态
-   - `#255` 部分恢复 bug 修复和功能
-   - **影响**：最终状态不确定，rebase 时需谨慎
+3. **AI SDK 全面迁移 → 回滚 → 分批恢复**
+   - `#253` 回滚到 pre-AI-SDK 状态
+   - `#255` 部分恢复 bug 修复和功能（Step 2）
+   - `#256-#258` **Reapply Batch 1-4**：将 AI SDK 迁移期间引入的非 AI-SDK 功能分批重新 cherry-pick 回来
+   - **最终状态**：AI SDK 迁移代码被移除，但期间的功能改进被保留
 
 4. **无损终端输出系统**
    - `#87` 全新终端输出 + 按需检索机制
    - **影响**：可能与你的终端增强功能冲突
+
+5. **Reapply Batches 带来的重大架构变更**（`#256-#258`）
+   - **Codex 风格 read_file 重构**（EXT-617）— ReadFileTool 大幅重写
+   - **footgun prompting 移除** — 文件级系统提示覆盖被移除
+   - **内置 Skills 机制移除** — 替换为 .agents/skills 目录
+   - **浏览器功能完全移除** — BrowserSession、BrowserActionRow 等全部删除
+   - **9 个低使用率 Provider 移除** — Cerebras、Chutes、DeepInfra、Doubao、Featherless、Groq、HuggingFace、IOIntelligence、Unbound（后在 `#303` 恢复）
+   - **影响**：大量文件变动，cherry-pick 需特别注意
 
 ### 🟡 功能移除
 
@@ -362,9 +442,10 @@
 | fetch_instructions 工具 | #99→#101（替换为 skill 工具） |
 | footgun prompting（文件级系统提示覆盖） | #233 |
 | 内置 Skills 机制 | #238 |
-| 浏览器使用功能 | #244 |
-| 9 个低使用率 Provider | #196 |
+| 浏览器使用功能 | #244（在 #258 Reapply 中正式生效） |
+| 9 个低使用率 Provider | #196（在 #258 Reapply 中正式生效，Unbound 在 #303 恢复） |
 | URL 上下文 / Google 搜索 Grounding | #165 |
+| Roomote Control | #291 |
 
 ### 🟢 重要新功能
 
@@ -387,6 +468,18 @@
 | 嵌套子任务递归树 | #189 |
 | 连续工具调用批量显示 | #195 |
 | disabledTools 全局禁用 | #178 |
+| Codex 风格 read_file 重构 | #256（Reapply Batch 1） |
+| search_and_replace→edit 重命名 | #256（Reapply Batch 1） |
+| Skills 管理 UI + Slash Commands | #258（Reapply Batch 3-4） |
+| Claude Sonnet 4.6 支持 | #265 |
+| 每会话文件变更面板 | #278 |
+| 每工作区索引 opt-in 控制 | #279 |
+| 每任务文件历史存储（跨实例安全） | #281 |
+| Gemini 3.1 Pro 支持 | #287 |
+| execute_command timeout 参数 | #294 |
+| 内联终端渲染与 VSCode 一致 | #300 |
+| MiniMax M2.5 模型 | #311 |
+| gpt-5.3-codex-spark 模型 | #292 |
 
 ### 🔧 重要 Bug 修复
 
@@ -409,6 +502,17 @@
 | 嵌套压缩包含已压缩内容 | #66 |
 | 孤立 tool_results | #44 |
 | token 计数返回 0 | #65 |
+| follow_up 参数验证缺失 | #262 |
+| 任务恢复时压缩摘要丢失 | #263 |
+| MCP 服务器初始化竞态 | #271 |
+| Bedrock Claude Sonnet 4.6 模型 ID 错误 | #273 |
+| revert 回归后类型版本号错误 | #275 |
+| 聊天 rehydration 滚动生命周期 | #280 |
+| 设置搜索结果宽度不一致 | #290 |
+| OpenAI done-only/content-part 响应 | #293 |
+| Bedrock 自定义 ARN 提示缓存 | #299 |
+| git 模板泄漏到 checkpoint 仓库 | #301 |
+| Vertex AI claude-sonnet-4-6 模型 ID | #304 |
 
 ---
 
@@ -422,9 +526,13 @@
 | 迁移 | Moonshot、DeepSeek、Cerebras、Groq、Fireworks、Mistral、SambaNova、xAI、HuggingFace、Gemini/Vertex、io-intelligence、featherless、chutes、Bedrock、baseten、zai、Anthropic、OpenAI、LM Studio、LiteLLM、Requesty、OpenAI Codex、MiniMax、Qwen Code、OpenRouter、Ollama、Roo、AnthropicVertex |
 | 问题 | reasoning 部分丢失（#144→#145→#146）、thought signature 问题（#160, #161）、环境详情追加问题（#150→#166→#167） |
 | 回滚 | **`6cfa82f57` — 回滚到 2026-01-29 的 pre-AI-SDK 状态** |
-| 恢复 | **`d52b6834e` — 重新添加回滚后的 bug 修复和功能** |
+| 恢复 Step 2 | **`d52b6834e` — 重新添加回滚后的 bug 修复和功能** |
+| 恢复 Batch 1 | **`b2b77809f` — 22 个无冲突的非 AI-SDK cherry-pick** |
+| 恢复 Batch 2 | **`bcb8c8191` — 9 个小冲突的非 AI-SDK cherry-pick** |
+| 恢复 Batch 3-4 | **`04ffb64bb` — Skills、浏览器移除、Provider 移除等 6 个大冲突 cherry-pick** |
+| 稳定 | v3.48.0 → v3.50.4（后续正常迭代） |
 
-> ⚠️ 最终 origin/main 的状态是：**AI SDK 迁移被回滚，但部分非 AI-SDK 的 bug 修复和功能被重新添加回来。**
+> ⚠️ 最终 origin/main 的状态是：**AI SDK 迁移代码被完全移除，但迁移期间引入的非 AI-SDK 功能改进通过 Reapply Batch 1-4 被分批恢复。v3.48.0 起进入正常迭代。**
 
 ---
 
@@ -432,9 +540,9 @@
 
 | 你的功能 | 风险 | 详细说明 |
 |---------|------|---------|
-| **工具协议选择器** | 🔴 严重 | XML 支持已彻底移除（#8, #26, #45），`toolProtocol` 设置已删除（#40），`getToolDescription` 已移除 |
-| **multi_edit_file** | 🟡 中等 | `search_and_replace` 重命名为 `edit`（#231），工具体系有变化，但由于 AI SDK 回滚，最终状态需要验证 |
-| **终端增强** | 🟡 中等 | 官方新增无损终端输出系统（#87），命令执行期间排队消息（#120），可能冲突 |
+| **工具协议选择器** | 🔴 严重 | XML 支持已彻底移除（#8, #26, #45），`toolProtocol` 设置已删除（#40），`getToolDescription` 已移除。Reapply Batch 1 进一步清理了 XML 相关代码 |
+| **multi_edit_file** | 🟡 中等 | `search_and_replace` 重命名为 `edit`（#231，在 #256 Reapply 中生效），工具体系有变化。Vertex/Gemini 禁用 apply_diff 启用 edit（#295） |
+| **终端增强** | 🟡 中等 | 官方新增无损终端输出系统（#87），命令执行期间排队消息（#120），execute_command 新增 timeout 参数（#294），内联终端渲染对齐 VSCode（#300），可能冲突 |
 | **导入任务** | 🟢 低 | 独立功能，影响小 |
 | **Shell Integration 修复** | 🟢 低 | 独立修复 |
 | **终端同步** | 🟢 低 | 独立功能 |
